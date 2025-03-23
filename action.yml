@@ -152,11 +152,11 @@ inputs:
     required: false
     description:
       'Model to use for simple tasks like summarizing diff on a file.'
-    default: 'anthropic.claude-3-haiku-20240307-v1:0'
+    default: 'us.anthropic.claude-3-7-sonnet-20250219-v1:0'
   bedrock_heavy_model:
     required: false
     description: 'Model to use for complex tasks such as code reviews.'
-    default: 'anthropic.claude-3-sonnet-20240229-v1:0'
+    default: 'us.anthropic.claude-3-7-sonnet-20250219-v1:0'
   bedrock_model_temperature:
     required: false
     description: 'Temperature for GPT model'
@@ -165,7 +165,7 @@ inputs:
     required: false
     description:
       'How many times to retry Bedrock API in case of timeouts or errors?'
-    default: '5'
+    default: '10'
   bedrock_timeout_ms:
     required: false
     description: 'Timeout for Bedrock API call in millis'
@@ -173,7 +173,7 @@ inputs:
   bedrock_concurrency_limit:
     required: false
     description: 'How many concurrent API calls to make to Bedrock servers?'
-    default: '6'
+    default: '2'
   github_concurrency_limit:
     required: false
     description: 'How many concurrent API calls to make to GitHub?'
