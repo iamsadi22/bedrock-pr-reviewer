@@ -22,8 +22,6 @@ import {getTokenCount} from './tokenizer'
 const context = github_context
 const repo = context.repo
 
-const ignoreKeyword = '/reviewbot: ignore'
-
 export const codeReview = async (
   lightBot: Bot,
   heavyBot: Bot,
@@ -58,7 +56,7 @@ export const codeReview = async (
   }
 
   // if the description contains ignore_keyword, skip
-  if (inputs.description.includes(ignoreKeyword)) {
+  if (inputs.description.includes(options.ignoreKeyword)) {
     info('Skipped: description contains ignore_keyword')
     return
   }
