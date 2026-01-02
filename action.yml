@@ -8,8 +8,8 @@ inputs:
   pinecone_api_key:
     description: "Pinecone API key"
     required: true
-  pinecone_env:
-    description: "Pinecone environment"
+  pinecone_host:
+    description: "Pinecone host"
     required: true
   bedrock_role_arn:
     description: "AWS Bedrock role ARN"
