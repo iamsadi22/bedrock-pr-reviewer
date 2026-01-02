@@ -81,11 +81,13 @@ $description
 $short_summary
 </pull_request_changes>
 
+$relevant_sops
+
 ## IMPORTANT Instructions
 
 Input: New hunks annotated with line numbers and old hunks (replaced code). Hunks represent incomplete code fragments. Example input is in <example_input> tag below.
-Additional Context: <pull_request_title>, <pull_request_description>, <pull_request_changes> and comment chains. 
-Task: Review new hunks for substantive issues using provided context and respond with comments if necessary.
+Additional Context: <pull_request_title>, <pull_request_description>, <pull_request_changes>, relevant SOPs, and comment chains. 
+Task: Review new hunks for substantive issues using provided context (including relevant SOP guidance) and respond with comments if necessary. Consider both best code review practices and SOP-specific guidance from your organization.
 
 You MUST use the JSON output tool to generate your response in the proper format. The JSON must contain:
 - An array of "reviews" with each having: line_start (integer), line_end (integer), and comment (string)

@@ -12,6 +12,7 @@ export class Inputs {
   diff: string
   commentChain: string
   comment: string
+  relevantSops: string
 
   constructor(
     systemMessage = '',
@@ -26,7 +27,8 @@ export class Inputs {
     patches = '',
     diff = 'no diff',
     commentChain = 'no other comments on this patch',
-    comment = 'no comment provided'
+    comment = 'no comment provided',
+    relevantSops = ''
   ) {
     this.systemMessage = systemMessage
     this.title = title
@@ -41,6 +43,7 @@ export class Inputs {
     this.diff = diff
     this.commentChain = commentChain
     this.comment = comment
+    this.relevantSops = relevantSops
   }
 
   clone(): Inputs {
@@ -57,7 +60,8 @@ export class Inputs {
       this.patches,
       this.diff,
       this.commentChain,
-      this.comment
+      this.comment,
+      this.relevantSops
     )
   }
 
@@ -103,6 +107,9 @@ export class Inputs {
     }
     if (this.comment) {
       content = content.replace('$comment', this.comment)
+    }
+    if (this.relevantSops) {
+      content = content.replace('$relevant_sops', this.relevantSops)
     }
     return content
   }

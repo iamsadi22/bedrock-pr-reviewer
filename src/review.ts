@@ -16,6 +16,11 @@ import {Inputs} from './inputs'
 import {octokit} from './octokit'
 import {type Options} from './options'
 import {type Prompts} from './prompts'
+import {
+  getRelevantSops,
+  formatSopsForPrompt,
+  type SOP
+} from './sopRetriever'
 import {getTokenCount} from './tokenizer'
 
 // eslint-disable-next-line camelcase
@@ -532,6 +537,46 @@ ${
         }
         tokens += patchTokens
         patchesToPack += 1
+      }
+
+      // Retrieve relevant SOPs for all patches that will be packed
+      const allSopsMap = new Map<string, SOP>() // Use ID as key to avoid duplicates
+      try {
+        info(`Retrieving relevant SOPs for ${patchesToPack} patches in ${filename}`)
+        for (let i = 0; i < patchesToPack && i < patches.length; i++) {
+          const [, , patch] = patches[i]
+          const sops = await getRelevantSops(patch)
+          for (const sop of sops) {
+            const key = sop.id || sop.text.substring(0, 100) // Use ID or first 100 chars as key
+            if (!allSopsMap.has(key)) {
+              allSopsMap.set(key, sop)
+            }
+          }
+        }
+        info(
+          `Retrieved ${allSopsMap.size} unique relevant SOP(s) for ${filename}`
+        )
+      } catch (e: any) {
+        warning(
+          `Failed to retrieve SOPs for ${filename}: ${e.message}. Continuing without SOP context.`
+        )
+      }
+
+      // Format SOPs for prompt
+      const allSopsArray = Array.from(allSopsMap.values())
+      const sopsFormatted = formatSopsForPrompt(allSopsArray)
+      const sopsTokens = getTokenCount(sopsFormatted)
+
+      // Account for SOP tokens in the token calculation
+      if (tokens + sopsTokens > options.heavyTokenLimits.requestTokens) {
+        warning(
+          `SOP context exceeds token limit, truncating or skipping SOPs for ${filename}`
+        )
+        // Optionally truncate SOPs - for now, skip if too large
+        ins.relevantSops = ''
+      } else {
+        tokens += sopsTokens
+        ins.relevantSops = sopsFormatted
       }
 
       let patchesPacked = 0
