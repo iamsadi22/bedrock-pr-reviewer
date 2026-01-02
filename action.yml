@@ -11,6 +11,9 @@ inputs:
   pinecone_host:
     description: "Pinecone host"
     required: true
+  pinecone_index:
+    description: "Pinecone index"
+    required: true
   bedrock_role_arn:
     description: "AWS Bedrock role ARN"
     required: true
