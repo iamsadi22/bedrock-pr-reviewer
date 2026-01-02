@@ -1,4 +1,4 @@
-import {info, warning} from '@actions/core'
+import {info, warning,getInput} from '@actions/core'
 import {Pinecone} from '@pinecone-database/pinecone'
 import {pipeline} from '@xenova/transformers'
 
@@ -34,12 +34,12 @@ async function initializeEmbedder(): Promise<void> {
  */
 async function initializePinecone(): Promise<void> {
   if (pineconeClient === null) {
-    const apiKey = process.env.PINECONE_API_KEY
-    const host = process.env.PINECONE_HOST
+    const apiKey = getInput('pinecone_api_key')
+    const host = getInput('pinecone_host')
     // Extract index name from host if provided, or use environment variable
     // Host format: sop-embeddings-2vib48a.svc.aped-4627-b74a.pinecone.io
     // Index name might be: sop-embeddings-2vib48a
-    let indexName = process.env.PINECONE_INDEX_NAME
+    let indexName = getInput('pinecone_index')
     if (!indexName && host) {
       // Extract index name from host (part before .svc.)
       const match = host.match(/^([^.]+)\.svc\./)
